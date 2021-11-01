@@ -7,7 +7,8 @@ const {
   productUpdate,
   productDetailFetch,
   fetchProduct,
-} = require("./controllers");
+} = require("./products.controllers");
+const upload = require("../../middleware/multer");
 
 // Create a mini express application
 const router = express.Router();
@@ -23,13 +24,11 @@ router.param("productId", async (req, res, next, productId) => {
   }
 });
 
-router.post("/", productCreate);
-
 router.get("/", productListFetch);
 
 router.get("/:productId", productDetailFetch);
 
-router.put("/:productId", productUpdate);
+router.put("/:productId", upload.single("image"), productUpdate);
 
 router.delete("/:productId", productDelete);
 

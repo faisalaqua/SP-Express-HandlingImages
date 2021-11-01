@@ -19,6 +19,10 @@ const ProductSchema = mongoose.Schema(
       type: Number,
       min: 0,
     },
+    shops: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shop",
+    },
   },
   {
     timestamps: true,
