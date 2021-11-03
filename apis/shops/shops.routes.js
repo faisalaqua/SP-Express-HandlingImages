@@ -1,11 +1,29 @@
 const express = require("express");
 // const { productCreate } = require("../products/products.controllers");
-const { getShop, shopCreate, productCreate } = require("./shops.controllers");
+const {
+  getShop,
+  shopCreate,
+  productCreate,
+  shopDelete,
+  fetchshop,
+} = require("./shops.controllers");
 const router = express.Router();
 const upload = require("../../middleware/multer");
 
+router.param("shopId", async (req, res, next, shopId) => {
+  const shop = await fetchshop(shopId, next);
+  if (shop) {
+    req.shop = shop;
+    next();
+  } else {
+    next({ status: 404, message: "Shop Not Found!" });
+  }
+});
+
+// Router
 router.get("/", getShop);
 router.post("/", shopCreate);
 router.post("/:shopId/products", upload.single("image"), productCreate);
+router.delete("/:shopId", shopDelete);
 
 module.exports = router;

@@ -1,6 +1,15 @@
 const Shop = require("../../db/models/Shop");
 const Product = require("../../db/models/Product");
 
+exports.fetchshop = async (shopId, next) => {
+  try {
+    const shop = await Shop.findById(shopId);
+    return shop;
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getShop = async (req, res) => {
   try {
     const shops = await Shop.find().populate("products");
@@ -30,6 +39,15 @@ exports.productCreate = async (req, res, next) => {
       }
     );
     return res.status(201).json(newProduct);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.shopDelete = async (req, res, next) => {
+  try {
+    await req.shop.remove();
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
