@@ -8,6 +8,8 @@ const path = require("path");
 const cors = require("cors");
 const shopRoutes = require("./apis/shops/shops.routes");
 const userRoutes = require("./apis/users/users.routes");
+const passport = require("passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 const app = express();
 
@@ -18,11 +20,11 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(logger);
-// app.use((req, res, next) => {
-//   if (req.body.name === "Broccoli Soup")
-//     res.status(400).json({ message: "I HATE BROCCOLI!! KEEFY! " });
-//   else next();
-// });
+
+// passport
+app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 // Routes
 app.use("/api/products", productRoutes);

@@ -2,7 +2,10 @@ const { Schema, model } = require("mongoose");
 const mongooseSlugPlugin = require("mongoose-slug-plugin");
 
 const UserSchema = new Schema({
-  username: String,
+  username: {
+    type: String,
+    unique: true,
+  },
   password: String,
   email: String,
   firstName: String,

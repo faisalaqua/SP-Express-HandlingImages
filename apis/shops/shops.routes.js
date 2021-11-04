@@ -9,6 +9,7 @@ const {
 } = require("./shops.controllers");
 const router = express.Router();
 const upload = require("../../middleware/multer");
+const passport = require("passport");
 
 router.param("shopId", async (req, res, next, shopId) => {
   const shop = await fetchshop(shopId, next);
@@ -22,7 +23,12 @@ router.param("shopId", async (req, res, next, shopId) => {
 
 // Router
 router.get("/", getShop);
-router.post("/", shopCreate);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  shopCreate
+);
 router.post("/:shopId/products", upload.single("image"), productCreate);
 router.delete("/:shopId", shopDelete);
 

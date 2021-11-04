@@ -11,6 +11,10 @@ const ShopSchema = new Schema(
         ref: "Product",
       },
     ],
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
