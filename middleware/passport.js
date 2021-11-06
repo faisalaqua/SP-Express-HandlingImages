@@ -25,12 +25,12 @@ exports.jwtStrategy = new JWTStrategy(
     jwtFromRequest: fromAuthHeaderAsBearerToken(),
     secretOrKey: JWT_SECRET,
   },
-  async (jwtPayload, done) => {
-    if (Date.now() > jwtPayload.exp) {
+  async (payload, done) => {
+    if (Date.now() > payload.exp) {
       return done(null, false);
     }
     try {
-      const user = await User.findOne(jwtPayload._id);
+      const user = await User.findById(payload._id);
       done(null, user);
     } catch (error) {
       done(error);

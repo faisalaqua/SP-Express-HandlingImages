@@ -11,6 +11,7 @@ const generateToken = (user) => {
   };
 
   const token = jwt.sign(payload, JWT_SECRET);
+  return token;
 };
 
 exports.signup = async (req, res, next) => {

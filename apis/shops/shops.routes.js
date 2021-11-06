@@ -29,7 +29,11 @@ router.post(
   upload.single("image"),
   shopCreate
 );
-router.post("/:shopId/products", upload.single("image"), productCreate);
+router.post(
+  "/:shopId/products",
+  passport.authenticate("jwt", { session: false }),
+  productCreate
+);
 router.delete("/:shopId", shopDelete);
 
 module.exports = router;

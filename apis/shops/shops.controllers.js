@@ -21,6 +21,11 @@ exports.getShop = async (req, res) => {
 
 exports.shopCreate = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `${req.protocol}://${req.get("host")}/${req.file.path}
+      }`;
+    }
+    req.body.owner = req.user._id;
     const newShop = await Shop.create(req.body);
     return res.status(201).json(newShop);
   } catch (error) {
@@ -30,6 +35,11 @@ exports.shopCreate = async (req, res) => {
 
 exports.productCreate = async (req, res, next) => {
   try {
+    if (!req.user._id.equals(req.shop.owner._id)) {
+      return next({
+        status: 401,
+      });
+    }
     req.body.shop = req.params.shopId;
     const newProduct = await Product.create(req.body);
     await Shop.findByIdAndUpdate(
