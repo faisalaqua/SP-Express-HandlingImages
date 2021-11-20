@@ -7,9 +7,6 @@ const UserSchema = new Schema({
     unique: true,
   },
   password: String,
-  email: String,
-  firstName: String,
-  lastName: String,
 });
 
 module.exports = model("User", UserSchema);
